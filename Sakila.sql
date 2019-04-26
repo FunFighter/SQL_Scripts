@@ -120,6 +120,18 @@ GROUP BY first_name, last_name;
 
 --7a
 -- The music of Queen and Kris Kristofferson started makeing K and Q movies rise again
+
+-- This is the requested subquery way but this is slower and longer to type.
+SELECT x.title, x.language FROM
+(SELECT f.title  title , l.name 'language' FROM film f
+JOIN language l 
+on l.language_id = f.language_id
+WHERE l.name = 'English'
+AND (f.title like 'K%'
+OR f.title like 'Q%')) as x
+;
+
+-- This is the performance way of doing it.
 SELECT f.title, l.name 'Language' FROM film f
 JOIN language l 
 ON l.language_id = f.language_id
@@ -129,6 +141,21 @@ OR f.title like 'Q%');
 
 -- 7b
 -- Who is in the movine Alone Trip
+-- To do it with a sub query again slower
+SELECT
+  fn,
+  ln
+-- ,title to check the movie name
+FROM (
+SELECT first_name fn, last_name, f.title titleln
+FROM actor a
+JOIN film_actor fa
+  ON fa.actor_id = a.actor_id
+JOIN film f
+  ON f.film_id = fa.film_id
+WHERE f.title = 'Alone Trip') x 
+;
+-- no need to join
 SELECT
   first_name,
   last_name
