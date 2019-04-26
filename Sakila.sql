@@ -174,7 +174,8 @@ ORDER BY rental_rate DESC
 ;
 
 -- 7f
-select s.store_id 'Store', a.address,  sum(p.amount) 'Total Amount' from store s
+SELECT s.store_id 'Store', a.address,  sum(p.amount) 'Total Amount' 
+FROM store s
 JOIN customer c
 ON c.store_id = s.store_id
 JOIN payment p 
@@ -186,7 +187,8 @@ GROUP BY s.store_id
 
 -- 7g
 -- They really need better names for their stores
-select s.store_id, c.city, co.country from store s
+SELECT s.store_id, c.city, co.country 
+FROM store s
 JOIN address a
 ON a.address_id = s.address_id
 JOIN city c
@@ -198,7 +200,7 @@ ON co.country_id = c.country_id
 
 
 -- 7h
-SELECT  c.name, count(p.amount) 'amount' 
+SELECT  c.name, SUM(p.amount) 'amount' 
 FROM category c
 JOIN film_category fc
 ON fc.category_id = c.category_id
@@ -209,12 +211,12 @@ ON r.inventory_id = i.inventory_id
 JOIN payment p 
 ON  p.rental_id = r.rental_id
 GROUP BY c.name
-order  by count(p.amount) desc
+order  by SUM(p.amount) desc
 ;
 
  -- 8a
 CREATE view top_categories as
-SELECT  c.name, count(p.amount) 'amount' 
+SELECT  c.name, SUM(p.amount) 'amount' 
 FROM category c
 JOIN film_category fc
 ON fc.category_id = c.category_id
@@ -225,7 +227,7 @@ ON r.inventory_id = i.inventory_id
 JOIN payment p 
 ON  p.rental_id = r.rental_id
 GROUP BY c.name
-order  by count(p.amount) desc
+order  by SUM(p.amount) desc
 limit 5
 ;
 -- 8b
